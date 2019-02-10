@@ -39,8 +39,7 @@ public class DriveTrain extends Subsystem {
 
       lt1.setInverted(true);
       lt2.setInverted(true);
-      lt3.setInverted(true);
-      
+      lt3.setInverted(true);    
   }
 
   public void drive(ControlMode mode, double left, double right){
