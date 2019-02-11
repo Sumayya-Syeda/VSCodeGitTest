@@ -9,16 +9,19 @@ package frc.robot;
 
 import java.util.HashMap;
 
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
-
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ToggleShift;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.SubsystemNames;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,7 +33,7 @@ import frc.robot.subsystems.*;
 public class Robot extends TimedRobot {
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static OI m_oi;
-
+  private Compressor compressor;
  
   private static HashMap<SubsystemNames, Subsystem> subsystems;
 
@@ -49,7 +52,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto mode", m_chooser);
     subsystems = new HashMap<SubsystemNames, Subsystem>();
     subsystems.put(SubsystemNames.DRIVE_TRAIN, new DriveTrain());
-
+    compressor = new Compressor(0);
   }
 
   /**
@@ -71,6 +74,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+   // ((DriveTrain) Robot.getSubsystem(SubsystemNames.DRIVE_TRAIN)).shiftFast();
   }
 
   @Override
@@ -131,6 +135,14 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    if (RobotController.getBatteryVoltage() < 9) {
+			compressor.stop();
+		} else {
+			compressor.start();
+    }
+
+   
   }
 
   /**

@@ -30,4 +30,8 @@ public class RobotMap {
   public static int rt1 = 3;
   public static int rt2 = 4;
   public static int rt3 = 6;
+
+  public static int shifterUp = 2;
+  public static int shifterDown = 7;
+  
 }
