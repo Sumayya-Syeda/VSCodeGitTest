@@ -7,15 +7,16 @@
 
 package frc.robot.subsystems;
 
-import java.util.TimerTask;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.PIDTemplate;
 import frc.robot.RobotMap;
 import frc.robot.commands.JoystickDrive;
 
@@ -23,11 +24,17 @@ import frc.robot.commands.JoystickDrive;
  * Add your docs here.
  */
 public class DriveTrain extends Subsystem {
-  // Put methods for controlling this subsystem
+	// Put methods for controlling this subsystem
   // here. Call these from Commands.
   private TalonSRX lt1, lt2, lt3, rt1, rt2, rt3;
+  
+
   private GearState gear;
   private DoubleSolenoid shifter;
+  private DifferentialDrive diffDrive;
+  private SpeedControllerGroup leftM;
+  private SpeedControllerGroup rightM;
+
   private Value fast = Value.kForward;
   private Value slow = Value.kReverse;
   private boolean isFast = false;
@@ -89,16 +96,22 @@ public class DriveTrain extends Subsystem {
 
       NeutralMode mode = NeutralMode.Brake;
 
-		  lt1.setNeutralMode(mode);
+	  lt1.setNeutralMode(mode);
       lt2.setNeutralMode(mode);
       lt3.setNeutralMode(mode);
       rt1.setNeutralMode(mode);
       rt2.setNeutralMode(mode);
-      rt3.setNeutralMode(mode);
+	  rt3.setNeutralMode(mode);
+	  
+	  
 
-      gear = GearState.UNKNOWN;
+	
+	//  gear = GearState.UNKNOWN;
+	  
+	//   PIDTemplate.configTalon(lt1, false);
+	//   PIDTemplate.configTalon(rt1, true);
 
-   //   shifter = new DoubleSolenoid(RobotMap.shifterUp, RobotMap.shifterDown);
+      shifter = new DoubleSolenoid(RobotMap.shifterUp, RobotMap.shifterDown);
   }
 
   public void drive(ControlMode mode, double left, double right){
@@ -106,17 +119,38 @@ public class DriveTrain extends Subsystem {
       rt1.set(mode, right);
   }
 
-  private void applyShift(String gearState){
-    if(gearState.equals("fast")) shifter.set(fast);
-    if(gearState.equals("slow")) shifter.set(slow);
-  }
+  
   public void toggleShift(){
     if(isFast){
       shifter.set(slow);
     }else {
       shifter.set(fast);
-    }
+	}
+	
+	isFast = !isFast;
   }
+/* public void applyShiftPID(GearState desiredState) {
+	if(desiredState == GearState.SLOW) {
+		//gear = GearState.SLOW;
+		double P_Drive_LOW = 0;
+		double I_Drive_LOW = 0;
+		double D_Drive_LOW =  0;
+		double F_Drive_LOW = 0; 
+		double targetSpeed_Drive_LOW = 0;
+		PIDTemplate.updatePID(lt1, P_Drive_LOW, I_Drive_LOW, D_Drive_LOW, F_Drive_LOW,targetSpeed_Drive_LOW) ;
+		PIDTemplate.updatePID(rt1, P_Drive_LOW, I_Drive_LOW, D_Drive_LOW, F_Drive_LOW,targetSpeed_Drive_LOW) ;
+	}else if(desiredState == GearState.FAST) {
+	//	gear = FAST;
+		double P_Drive_HIGH = 0.35;
+		double I_Drive_HIGH = 1.0E-4;
+		double D_Drive_HIGH = 0.11;
+		double F_Drive_HIGH = 0;
+		double targetSpeed_Drive_FAST = 0;
+		
+		PIDTemplate.updatePID(lt1, P_Drive_HIGH, I_Drive_HIGH, D_Drive_HIGH, F_Drive_HIGH, targetSpeed_Drive_FAST);
+		PIDTemplate.updatePID(rt1, P_Drive_HIGH, I_Drive_HIGH, D_Drive_HIGH, F_Drive_HIGH, targetSpeed_Drive_FAST);
+	}
+}*/
 /*
   private void applyShift(GearState desiredState, int attempt) {
 		if (attempt > 10) {
@@ -157,18 +191,6 @@ public class DriveTrain extends Subsystem {
 			System.out.println("In unknown state, defaulting to LOW");
 			applyShift(GearState.FAST, 0);
 		}
-
-	}
-
-	public void shiftFast() {
-
-		applyShift(GearState.FAST, 0);
-
-	}
-
-	public void shiftSlow() {
-
-		applyShift(GearState.SLOW, 0);
 
 	}*/
 }

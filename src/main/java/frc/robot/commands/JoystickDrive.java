@@ -10,6 +10,7 @@ package frc.robot.commands;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
@@ -18,9 +19,11 @@ import frc.robot.subsystems.SubsystemNames;
 
 public class JoystickDrive extends Command {
   DriveTrain drive;
+  DifferentialDrive diffDrive;
   public JoystickDrive() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+   // System.out.println("Joystick" + Robot.getSubsystem(SubsystemNames.DRIVE_TRAIN));
     requires(Robot.getSubsystem(SubsystemNames.DRIVE_TRAIN));
    
   }
@@ -28,7 +31,7 @@ public class JoystickDrive extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    
+    drive = (DriveTrain) Robot.getSubsystem(SubsystemNames.DRIVE_TRAIN);
     
   }
 
@@ -39,9 +42,8 @@ public class JoystickDrive extends Command {
     double turn  = OI.joyTurn.getRawAxis(0);
 
     drive.drive(ControlMode.PercentOutput, sig(throttle - cubeRoot(turn)), sig(throttle + cubeRoot(turn)));
-
-   SmartDashboard.putNumber("throttle", throttle);
-
+    
+  SmartDashboard.putNumber("throttle", throttle);
 
   }
 
@@ -72,5 +74,6 @@ public class JoystickDrive extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    drive.drive(ControlMode.PercentOutput,0,0);
   }
 }

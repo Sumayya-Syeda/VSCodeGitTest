@@ -53,6 +53,7 @@ public class Robot extends TimedRobot {
     subsystems = new HashMap<SubsystemNames, Subsystem>();
     subsystems.put(SubsystemNames.DRIVE_TRAIN, new DriveTrain());
     compressor = new Compressor(0);
+    System.out.println(subsystems);
   }
 
   /**
