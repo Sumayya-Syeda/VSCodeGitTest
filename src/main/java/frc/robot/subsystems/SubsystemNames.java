@@ -3,5 +3,5 @@ package frc.robot.subsystems;
 
 
 public enum SubsystemNames {
-	DRIVE_TRAIN;
+	DRIVE_TRAIN, ELEVATOR, INTAKE, HATCH;
 }

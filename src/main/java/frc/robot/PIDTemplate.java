@@ -20,7 +20,7 @@ public class PIDTemplate {
 		talon.config_kP(0,  P, timeoutConstant);
 		talon.config_kI(0,  I,  timeoutConstant); 	
 		talon.config_kD(0,  D,  timeoutConstant);
-		
+		//System.out.println("pid running");
 		talon.configMotionCruiseVelocity((int)targetSpeed, timeoutConstant); //set cruise velocity
 		talon.configMotionAcceleration((int) targetSpeed, timeoutConstant);  //set acceleration
 		talon.configAllowableClosedloopError(PIDIndex, error, timeoutConstant); //(PIDIndex, error, timeout) PID is disabled once the error is within set value
@@ -29,6 +29,8 @@ public class PIDTemplate {
 	/* configure the voltage output of the talon*/
 	public static void configTalon(TalonSRX talon, boolean side) {
 
+
+		System.out.println("configuring talon");
 		final int timeOutConstant = 10;
 		final int PIDIndex = 0;
 		

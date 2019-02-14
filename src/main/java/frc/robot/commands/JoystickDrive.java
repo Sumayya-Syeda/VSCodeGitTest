@@ -36,17 +36,23 @@ public class JoystickDrive extends Command {
   }
 
   // Called repeatedly when this Command is scheduled to run
+  /**set motor power values based on joystick throttle and turn  */
   @Override
   protected void execute() {
     double throttle =  OI.joyThrottle.getRawAxis(1);
+    throttle = Math.abs(throttle) < 0.1 ? 0 : throttle;
     double turn  = OI.joyTurn.getRawAxis(0);
+    turn  = Math.abs(turn) < 0.1 ? 0 : turn;
+
 
     drive.drive(ControlMode.PercentOutput, sig(throttle - cubeRoot(turn)), sig(throttle + cubeRoot(turn)));
     
-  SmartDashboard.putNumber("throttle", throttle);
+   SmartDashboard.putNumber("throttle", throttle);
 
   }
 
+
+  
   public double cubeRoot(double val) {
 		if (val >= 0) {
 			return Math.pow(val, 3 / 2d);

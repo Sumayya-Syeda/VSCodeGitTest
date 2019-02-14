@@ -23,7 +23,6 @@ public class ToggleShift extends Command {
   protected void initialize() {
     drive = (DriveTrain) (Robot.getSubsystem(SubsystemNames.DRIVE_TRAIN));
     drive.toggleShift();
-    System.out.println("toggle" + Robot.getSubsystem(SubsystemNames.DRIVE_TRAIN));
   }
 
   // Called repeatedly when this Command is scheduled to run
